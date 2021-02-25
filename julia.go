@@ -13,10 +13,14 @@ import (
 type GenFunc func(complex128) complex128
 
 type julia struct {
+	// h, w is the image height and width in pixels.
 	h, w int
+	// x and y represent the range of values for the real and imaginary parts.
 	x, y float64
+	// maxz defines the maximum length of a complex number.
 	maxz float64
 	fn   GenFunc
+	// iter indicates the maximum number of iterations.
 	iter int
 	img  *image.RGBA
 }
@@ -44,6 +48,11 @@ func (j *julia) CleanImage() {
 // Generative draws the julia set with specified color map.
 func (j *julia) Generative(cm ColorMap) {
 
+	n := len(cm)
+	if n > 255 {
+		n = 255
+	}
+
 	for i := 0; i <= j.w; i++ {
 		for k := 0; k <= j.h; k++ {
 			nit := 0
@@ -53,7 +62,7 @@ func (j *julia) Generative(cm ColorMap) {
 				z = j.fn(z)
 				nit += 1
 			}
-			idx := uint8(nit*255/j.iter) % uint8(len(cm)-1)
+			idx := uint8(nit*255/j.iter) % uint8(n)
 			j.img.Set(i, k, cm[idx])
 		}
 	}
