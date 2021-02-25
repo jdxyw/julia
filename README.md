@@ -30,7 +30,7 @@ In this example, we generative a `Julia Set` with $z=z^{2}+C$ and `Plasma` color
 package main
 
 import (
-	"julia"
+	"github.com/jdxyw/julia"
 )
 
 func julia1(z complex128) complex128 {
@@ -57,7 +57,7 @@ In this example, we generative a `Julia Set` with $z=z^{3}+C$ and `Magma` color 
 package main
 
 import (
-	"julia"
+	"github.com/jdxyw/julia"
 )
 
 func julia1(z complex128) complex128 {
@@ -84,7 +84,7 @@ In this example, we generative a `Julia Set` with $z=z^{2}+C$ and `Viridis` colo
 package main
 
 import (
-	"julia"
+	"github.com/jdxyw/julia"
 )
 
 func julia1(z complex128) complex128 {
@@ -104,14 +104,14 @@ func main() {
 ```
 ![](images/julia3.png)
 
-### Example 3
+### Example 4
 In this example, we generative a `Julia Set` with $z=z^{2}+C$ and `Inferno` color map, , $C=-0.1+0.65i$
 
 ```go
 package main
 
 import (
-	"julia"
+	"github.com/jdxyw/julia"
 )
 
 func julia1(z complex128) complex128 {
