@@ -2,7 +2,6 @@ package julia
 
 import (
 	"image"
-	"image/color"
 	"image/jpeg"
 	"image/png"
 	"math/cmplx"
@@ -14,12 +13,13 @@ type GenFunc func(complex128) complex128
 type julia struct {
 	h, w int
 	x, y float64
+	maxz float64
 	fn   GenFunc
 	iter int
 	img  *image.RGBA
 }
 
-func NewJulia(h, w int, x, y float64, iter int, fn GenFunc) *julia {
+func NewJulia(h, w int, x, y float64, iter int, z float64, fn GenFunc) *julia {
 	return &julia{
 		h:    h,
 		w:    w,
@@ -27,6 +27,7 @@ func NewJulia(h, w int, x, y float64, iter int, fn GenFunc) *julia {
 		y:    y,
 		fn:   fn,
 		iter: iter,
+		maxz: z,
 		img:  image.NewRGBA(image.Rect(0, 0, h, w)),
 	}
 }
@@ -40,18 +41,18 @@ func (j *julia) CleanImage() {
 	j.img = image.NewRGBA(image.Rect(0, 0, j.h, j.w))
 }
 
-func (j *julia) Generative(maxz float64, cm []color.Color) {
+func (j *julia) Generative(cm ColorMap) {
 
 	for i := 0; i <= j.w; i++ {
 		for k := 0; k <= j.h; k++ {
 			nit := 0
 			z := complex(float64(i)/float64(j.w)*2.0*j.x-j.x, float64(k)/float64(j.h)*2.0*j.y-j.y)
 
-			for cmplx.Abs(z) <= maxz && nit < j.iter {
+			for cmplx.Abs(z) <= j.maxz && nit < j.iter {
 				z = j.fn(z)
 				nit += 1
 			}
-			idx := uint8(nit * 255 / j.iter) % uint8(len(cm)-1)
+			idx := uint8(nit*255/j.iter) % uint8(len(cm)-1)
 			j.img.Set(i, k, cm[idx])
 		}
 	}

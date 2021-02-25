@@ -13,7 +13,7 @@ func julia1(z complex128) complex128 {
 }
 
 func main() {
-	j := julia.NewJulia(800, 800, 1.5, 1.5, 1000, julia1)
-	j.GenerativeGray(10)
+	j := julia.NewJulia(800, 800, 1.5, 1.5, 1000, 10, julia1)
+	j.Generative(julia.Twilight)
 	j.ToPng("julia1.png")
 }
