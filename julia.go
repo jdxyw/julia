@@ -75,6 +75,8 @@ func (j *julia) ToPng(path string) error {
 	if err := f.Close(); err != nil {
 		return err
 	}
+
+	return nil
 }
 
 func (j *julia) ToJpeg(path string) error {
@@ -90,4 +92,6 @@ func (j *julia) ToJpeg(path string) error {
 	if err := f.Close(); err != nil {
 		return err
 	}
+
+	return nil
 }
