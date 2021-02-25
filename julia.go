@@ -40,7 +40,7 @@ func (j *julia) CleanImage() {
 	j.img = image.NewRGBA(image.Rect(0, 0, j.h, j.w))
 }
 
-func (j *julia) GenerativeGray(maxz float64) {
+func (j *julia) Generative(maxz float64, cm []color.Color) {
 
 	for i := 0; i <= j.w; i++ {
 		for k := 0; k <= j.h; k++ {
@@ -51,13 +51,8 @@ func (j *julia) GenerativeGray(maxz float64) {
 				z = j.fn(z)
 				nit += 1
 			}
-			ratio := uint8(nit * 255 / j.iter)
-			j.img.Set(i, k, color.RGBA{
-				R: ratio,
-				G: ratio,
-				B: ratio,
-				A: 255,
-			})
+			idx := uint8(nit * 255 / j.iter) % uint8(len(cm)-1)
+			j.img.Set(i, k, cm[idx])
 		}
 	}
 }
