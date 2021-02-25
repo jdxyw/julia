@@ -1,3 +1,4 @@
+//Package julia provides interface to draw a julia set with customize complementary sets and color map.
 package julia
 
 import (
@@ -8,6 +9,7 @@ import (
 	"os"
 )
 
+// GenFunc defines a func type used by julia set.
 type GenFunc func(complex128) complex128
 
 type julia struct {
@@ -19,6 +21,7 @@ type julia struct {
 	img  *image.RGBA
 }
 
+// NewJulia returns a julia struct.
 func NewJulia(h, w int, x, y float64, iter int, z float64, fn GenFunc) *julia {
 	return &julia{
 		h:    h,
@@ -32,15 +35,13 @@ func NewJulia(h, w int, x, y float64, iter int, z float64, fn GenFunc) *julia {
 	}
 }
 
-func (j *julia) SetFunc(fn GenFunc) {
-	j.fn = fn
-}
-
+// CleanImage clean the image and create a new RGBA object.
 func (j *julia) CleanImage() {
 	j.img = nil
 	j.img = image.NewRGBA(image.Rect(0, 0, j.h, j.w))
 }
 
+// Generative draws the julia set with specified color map.
 func (j *julia) Generative(cm ColorMap) {
 
 	for i := 0; i <= j.w; i++ {
@@ -58,6 +59,7 @@ func (j *julia) Generative(cm ColorMap) {
 	}
 }
 
+// ToPng saves the image to local with PNG format.
 func (j *julia) ToPng(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
@@ -75,6 +77,7 @@ func (j *julia) ToPng(path string) error {
 	return nil
 }
 
+// ToJpeg saves the image to local with Jpeg format.
 func (j *julia) ToJpeg(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
