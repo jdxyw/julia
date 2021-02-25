@@ -31,6 +31,10 @@ func NewJulia(h, w int, x, y float64, iter int, fn GenFunc) *julia {
 	}
 }
 
+func (j *julia) SetFunc(fn GenFunc) {
+	j.fn = fn
+}
+
 func (j *julia) CleanImage() {
 	j.img = nil
 	j.img = image.NewRGBA(image.Rect(0, 0, j.h, j.w))
@@ -52,7 +56,7 @@ func (j *julia) GenerativeGray(maxz float64) {
 				R: ratio,
 				G: ratio,
 				B: ratio,
-				A: 0,
+				A: 255,
 			})
 		}
 	}
@@ -63,7 +67,14 @@ func (j *julia) ToPng(path string) error {
 	if err != nil {
 		return err
 	}
-	return png.Encode(f, j.img)
+	if err := png.Encode(f, j.img); err != nil {
+		f.Close()
+		return err
+	}
+
+	if err := f.Close(); err != nil {
+		return err
+	}
 }
 
 func (j *julia) ToJpeg(path string) error {
@@ -71,5 +82,12 @@ func (j *julia) ToJpeg(path string) error {
 	if err != nil {
 		return err
 	}
-	return jpeg.Encode(f, j.img, nil)
+	if err := jpeg.Encode(f, j.img, nil); err != nil {
+		f.Close()
+		return err
+	}
+
+	if err := f.Close(); err != nil {
+		return err
+	}
 }
